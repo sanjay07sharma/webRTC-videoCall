@@ -7,6 +7,7 @@ const myPeer = new Peer(undefined, {
 
 const myVideo = document.createElement('video')
 const video = document.createElement('video');
+const video1 = document.createElement('video');
 const screen = [];
 myVideo.muted = true;
 const peers = {}
@@ -24,7 +25,10 @@ navigator.mediaDevices.getUserMedia({
   myPeer.on('call', call => {
     call.answer(stream);
     call.on('stream', userVideoStream => {
-      addVideoStream(video, userVideoStream);
+      const currentVideo = video.srcObject ? video1 : video
+      addVideoStream(currentVideo, userVideoStream);
+      document.getElementById('remote-video').append(video1)
+      currentVideo.play();
     });
   });
 
@@ -110,10 +114,7 @@ function stopScreenShare() {
 
 
 async function streamScreenVideo(stream) {
-  const video = document.createElement('video');
-  video.classList.add('video');
-  video.srcObject = stream;
-  video.play();
-
-  document.getElementById('remote-video').append(video);
+  video1.srcObject = stream;
+  video1.play();
+  document.getElementById('remote-video').append(video1);
 }

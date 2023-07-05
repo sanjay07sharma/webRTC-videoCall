@@ -8,15 +8,6 @@ io.on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId);
     socket.broadcast.to(roomId).emit('user-connected', userId);
-
-    socket.on('screen-shared', stream => {
-      socket.broadcast.to(roomId).emit('user-screen-shared', userId, stream);
-    });
-
-    socket.on('screen-stopped', () => {
-      socket.broadcast.to(roomId).emit('user-screen-stopped', userId);
-    });
-
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
     });
